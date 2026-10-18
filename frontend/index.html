@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#101828">
+    <title>SecureDoc AI — Private Knowledge Workspace</title>
+    <link rel="stylesheet" href="/frontend/style.css">
+    <script src="/frontend/app.js" defer></script>
+</head>
+<body>
+    <section id="loginScreen" class="login-screen">
+        <div class="login-brand">
+            <div class="brand-mark">S</div>
+            <span>SecureDoc <strong>AI</strong></span>
+        </div>
+
+        <div class="login-card">
+            <div class="eyebrow">PRIVATE KNOWLEDGE WORKSPACE</div>
+            <h1>Your documents.<br>Answers you can trust.</h1>
+            <p class="muted">
+                Sign in to search your company's authorized knowledge securely.
+            </p>
+
+            <form id="loginForm">
+                <label for="email">Email address</label>
+                <input id="email" name="email" type="email"
+                       placeholder="you@company.com" autocomplete="username"
+                       required>
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password"
+                       placeholder="Enter your password"
+                       autocomplete="current-password" required>
+
+                <button id="loginButton" class="primary-button" type="submit">
+                    Sign in <span aria-hidden="true">→</span>
+                </button>
+                <p id="loginMessage" class="status-message" role="status"></p>
+            </form>
+
+            <div class="security-note">
+                <span class="status-dot"></span>
+                Your workspace is protected by access controls.
+            </div>
+        </div>
+
+        <p class="login-footer">SecureDoc AI · Permission-aware document intelligence</p>
+    </section>
+
+    <section id="appScreen" class="app-shell hidden">
+        <aside class="sidebar">
+            <a class="brand" href="#" aria-label="SecureDoc AI home">
+                <span class="brand-mark">S</span>
+                <span>SecureDoc <strong>AI</strong></span>
+            </a>
+
+            <div class="workspace-label">WORKSPACE</div>
+            <div class="workspace-card">
+                <div class="workspace-icon">D</div>
+                <div class="workspace-copy">
+                    <strong>Demo Company</strong>
+                    <span>Private workspace</span>
+                </div>
+                <span class="workspace-chevron">⌄</span>
+            </div>
+
+            <div class="nav-label">MENU</div>
+
+<nav class="side-nav" aria-label="Main navigation">
+    <button class="nav-item" data-view="dashboard">
+        <span class="nav-icon">▦</span> Dashboard
+    </button>
+    <button class="nav-item active" data-view="chat">
+        <span class="nav-icon">✳</span> AI Assistant
+    </button>
+    <button class="nav-item" data-view="documents">
+        <span class="nav-icon">▤</span> Documents
+    </button>
+</nav>
+
+
+            <div class="sidebar-bottom">
+                <div class="privacy-card">
+                    <span class="privacy-icon">✓</span>
+                    <strong>Private by design</strong>
+                    <p>Answers are generated from documents your account is allowed to access.</p>
+                </div>
+                <button id="logoutButton" class="logout-button">
+                    <span>↪</span> Sign out
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-panel">
+            <header class="topbar">
+                <div>
+                    <div class="breadcrumb">Workspace <span>/</span> <strong id="pageTitle">AI Assistant</strong></div>
+                    <p class="topbar-subtitle">Your company's knowledge, in one place.</p>
+                </div>
+                <div class="user-chip">
+                    <div class="avatar">U</div>
+                    <div class="user-copy">
+                        <strong id="userEmail">Signed in</strong>
+                        <span id="userRole">Loading workspace role...</span>
+                    </div>
+                </div>
+            </header>
+
+
+<section id="dashboardView" class="view dashboard-view hidden">
+    <div class="section-heading">
+        <div>
+            <div class="eyebrow">WORKSPACE OVERVIEW</div>
+            <h1>Dashboard</h1>
+            <p class="muted">A live overview of your company's knowledge library.</p>
+        </div>
+        <button id="refreshDashboard" class="secondary-button">↻ Refresh</button>
+    </div>
+
+    <div id="dashboardMessage" class="status-message" role="status"></div>
+
+    <div class="dashboard-stats">
+        <article class="stat-card">
+            <div class="stat-card-top">
+                <span class="stat-label">Total documents</span>
+                <span class="stat-icon">▤</span>
+            </div>
+            <div id="statDocuments" class="stat-value">—</div>
+            <p class="stat-caption">Files in this workspace</p>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-card-top">
+                <span class="stat-label">Indexed chunks</span>
+                <span class="stat-icon">▥</span>
+            </div>
+            <div id="statChunks" class="stat-value">—</div>
+            <p class="stat-caption">Text sections available for retrieval</p>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-card-top">
+                <span class="stat-label">Workspace role</span>
+                <span class="stat-icon">♙</span>
+            </div>
+            <div id="statRole" class="stat-value stat-value-text">—</div>
+            <p id="statWorkspace" class="stat-caption">Your active workspace</p>
+        </article>
+    </div>
+
+    <div class="recent-panel">
+        <div class="document-heading">
+            <div>
+                <h2>Recently added documents</h2>
+                <p class="muted">The latest files in your workspace.</p>
+            </div>
+            <button id="dashboardViewDocuments" class="secondary-button">
+                View all documents →
+            </button>
+        </div>
+
+        <div class="document-table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>DOCUMENT</th>
+                        <th>DOCUMENT ID</th>
+                        <th>ADDED</th>
+                    </tr>
+                </thead>
+                <tbody id="recentDocumentRows">
+                    <tr>
+                        <td colspan="3" class="table-empty">Loading dashboard...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+            <section id="chatView" class="view chat-view">
+                <div class="chat-heading">
+                    <div class="assistant-symbol">✳</div>
+                    <div>
+                        <div class="eyebrow">SECUREDOC ASSISTANT</div>
+                        <h1>What would you like to know?</h1>
+                        <p class="muted">Ask a question about your company's documents.</p>
+                    </div>
+                </div>
+
+                <div class="suggestion-list">
+                    <button class="suggestion" data-question="How many annual paid leave days do employees receive?">
+                        <span>↗</span>
+                        <span><strong>Company policies</strong><small>How many annual paid leave days do employees receive?</small></span>
+                    </button>
+                    <button class="suggestion" data-question="How far in advance should planned leave be requested?">
+                        <span>↗</span>
+                        <span><strong>Find a requirement</strong><small>How far in advance should planned leave be requested?</small></span>
+                    </button>
+                </div>
+
+                <div id="chatMessages" class="chat-messages" aria-live="polite">
+                    <div class="welcome-note">
+                        <span class="welcome-icon">✳</span>
+                        <div>
+                            <strong>Answers grounded in your documents</strong>
+                            <p>Ask a question to retrieve relevant information and view its sources.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="chatForm" class="composer">
+                    <textarea id="questionInput" rows="1" maxlength="1000"
+                        placeholder="Ask a question about your documents..."
+                        aria-label="Your question" required></textarea>
+                    <div class="composer-bottom">
+                        <span>Answers are based on authorized workspace documents.</span>
+                        <button id="sendButton" class="primary-button send-button" type="submit">
+                            Ask AI <span>↑</span>
+                        </button>
+                    </div>
+                </form>
+                <p class="disclaimer">AI-generated responses can be inaccurate. Verify important information in the cited source.</p>
+            </section>
+
+            <section id="documentsView" class="view documents-view hidden">
+                <div class="section-heading">
+                    <div>
+                        <div class="eyebrow">KNOWLEDGE LIBRARY</div>
+                        <h1>Documents</h1>
+                        <p class="muted">Manage the files used by your company's AI assistant.</p>
+                    </div>
+                    <button id="refreshDocuments" class="secondary-button">↻ Refresh</button>
+                </div>
+
+                <div id="uploadCard" class="upload-card">
+                    <div class="upload-icon">↑</div>
+                    <div class="upload-copy">
+                        <h2>Add a document</h2>
+                        <p>Upload a text or PDF file to make its contents searchable.</p>
+                        <p class="muted small-text">PDF or TXT · Maximum 10 MB</p>
+                    </div>
+                    <form id="uploadForm" class="upload-controls">
+                        <input id="documentFile" type="file" accept=".pdf,.txt" required>
+                        <button id="uploadButton" class="primary-button" type="submit">Upload file</button>
+                    </form>
+                    <p id="uploadMessage" class="status-message" role="status"></p>
+                </div>
+
+                <div class="document-heading">
+                    <div>
+                        <h2>Workspace files</h2>
+                        <p class="muted">Documents available in this workspace.</p>
+                    </div>
+                    <span id="documentCount" class="count-pill">0 files</span>
+                </div>
+
+                <div class="document-table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>DOCUMENT</th><th>DOCUMENT ID</th><th>ADDED</th><th>ACTION</th></tr>
+                        </thead>
+                        <tbody id="documentRows">
+                            <tr><td colspan="4" class="table-empty">Sign in to load documents.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="documentsMessage" class="status-message" role="status"></p>
+            </section>
+        </main>
+    </section>
+</body>
+</html>
